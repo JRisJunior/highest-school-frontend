@@ -23,10 +23,13 @@ class Calendar extends Component {
     this.state = {
       viewType: "Week",
       durationBarVisible: false,
+      cellHeight: 30,
+      dayBeginsHour: 6,
+      dayEndsHour: 21,
       timeRangeSelectedHandling: "Enabled",
       onTimeRangeSelected: async args => {
         const dp = this.calendar;
-        const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+        const modal = await DayPilot.Modal.prompt("What subject are you learning today?:", "Subject 1");
         dp.clearSelection();
         if (!modal.result) {
           return;
@@ -42,7 +45,9 @@ class Calendar extends Component {
       onEventClick: async args => {
         const dp = this.calendar;
         const modal = await DayPilot.Modal.prompt("Update event text:", args.e.text());
-        if (!modal.result) { return; }
+        if (!modal.result) {
+          return;
+        }
         const e = args.e;
         e.data.text = modal.result;
         dp.events.update(e);
@@ -99,8 +104,8 @@ class Calendar extends Component {
         <div style={styles.left}>
           <DayPilotNavigator
             selectMode={"week"}
-            showMonths={3}
-            skipMonths={3}
+            showMonths={2}
+            skipMonths={2}
             onTimeRangeSelected={ args => {
               console.log("You clicked: " + args.day);
               this.calendar.update({
