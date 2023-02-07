@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { EventsIndex } from "./EventsIndex";
+import { EventsNew } from "./EventsNew";
 
 export function Content() {
 
@@ -19,10 +20,19 @@ export function Content() {
     });
   };
 
+  const handleCreateEvent = (params, successCallback) => {
+    console.log("handleCreateEvent", params);
+    axios.post("http://localhost:3000/events.json", params).then((response) => {
+      setEvents([...events, response.data]);
+      successCallback();
+    });
+  };
+
   useEffect(handleIndexEvents, []);
 
   return (
     <div>
+      <EventsNew onCreateEvent={handleCreateEvent} />
       <EventsIndex events={events} />
     </div>
   );
