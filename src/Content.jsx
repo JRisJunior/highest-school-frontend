@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { EventsIndex } from "./EventsIndex";
 import { EventsNew } from "./EventsNew";
+import { EventsShow } from "./EventsShow";
+import { Modal } from "./Modal";
 
 export function Content() {
 
@@ -11,6 +13,8 @@ export function Content() {
   // ];
 
   const [events, setEvents] = useState([]);
+  const [isEventsShowVisible, setIsEventsShowVisible] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState({});
 
   const handleIndexEvents = () => {
     console.log("handleIndexEvents");
@@ -28,12 +32,26 @@ export function Content() {
     });
   };
 
+  const handleShowEvent = (event) => {
+    console.log("handleShowEvent", event);
+    setIsEventsShowVisible(true);
+    setCurrentEvent(event);
+  };
+
+  const handleClose = () => {
+    console.log("handleClose");
+    setIsEventsShowVisible(false);
+  };
+
   useEffect(handleIndexEvents, []);
 
   return (
     <div>
       <EventsNew onCreateEvent={handleCreateEvent} />
-      <EventsIndex events={events} />
+      <Modal show={isEventsShowVisible} onClose={handleClose}>
+        <EventsShow event={currentEvent} />
+      </Modal>
+      <EventsIndex events={events} onShowEvent={handleShowEvent} />
     </div>
   );
 }

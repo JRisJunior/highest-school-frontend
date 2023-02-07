@@ -9,6 +9,7 @@ export function EventsIndex(props) {
           <p>Description: {event.description}</p>
           <li>Start time: {event.start_time}</li>
           <li>End time: {event.end_time}</li>
+          <button onClick={() => props.onShowEvent(event)}>More info</button>
         </div>
       ))}
     </div>
