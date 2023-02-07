@@ -43,13 +43,21 @@ export function Content() {
     setIsEventsShowVisible(false);
   };
 
+  const handleDestroyEvent = (event) => {
+    console.log("handleDestroyEvent", event);
+    axios.delete(`http://localhost:3000/events/${event.id}.json`).then((response) => {
+      setEvents(events.filter((e) => e.id !== event.id));
+      handleClose();
+    });
+  };
+
   useEffect(handleIndexEvents, []);
 
   return (
     <div>
       <EventsNew onCreateEvent={handleCreateEvent} />
       <Modal show={isEventsShowVisible} onClose={handleClose}>
-        <EventsShow event={currentEvent} />
+        <EventsShow event={currentEvent} onDestroyEvent={handleDestroyEvent} />
       </Modal>
       <EventsIndex events={events} onShowEvent={handleShowEvent} />
     </div>
