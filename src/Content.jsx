@@ -60,7 +60,7 @@ export function Content() {
       <Modal show={isEventsShowVisible} onClose={handleClose}>
         <EventsShow event={currentEvent} onDestroyEvent={handleDestroyEvent} />
       </Modal>
-      <Calendar />
+      <Calendar color={events} />
       <EventsIndex events={events} onShowEvent={handleShowEvent} />
     </div>
   );
