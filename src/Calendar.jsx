@@ -64,11 +64,7 @@ class Calendar extends Component {
 
   componentDidMount() {
 
-
-
-    const events = [];
-
-    this.calendar.events.load("http://localhost:3000/events.json", function success(args) {
+    const events = this.calendar.events.load("http://localhost:3000/events.json", function success(args) {
       console.log("events index pull to calendar");
       console.log(args.data);
       args.preventDefault();
@@ -102,6 +98,7 @@ class Calendar extends Component {
     //     backColor: "#cc4125"
     //   },
     // ];
+    // const events = [];
 
     console.log("color from mount");
     console.log(this.props.color);
