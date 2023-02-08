@@ -4,7 +4,6 @@ import { EventsIndex } from "./EventsIndex";
 import { EventsNew } from "./EventsNew";
 import { EventsShow } from "./EventsShow";
 import { Modal } from "./Modal";
-import Calendar from "./Calendar";
 
 export function Content() {
 
@@ -60,7 +59,6 @@ export function Content() {
       <Modal show={isEventsShowVisible} onClose={handleClose}>
         <EventsShow event={currentEvent} onDestroyEvent={handleDestroyEvent} />
       </Modal>
-      <Calendar color={events} />
       <EventsIndex events={events} onShowEvent={handleShowEvent} />
     </div>
   );
