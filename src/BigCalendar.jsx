@@ -1,55 +1,75 @@
 import moment from 'moment';
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Calendar,
   Views,
   DateLocalizer,
   momentLocalizer,
+  dateFnsLocalizer,
 } from 'react-big-calendar';
+import format from "date-fns/format";
+import getDay from "date-fns/getDay";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
-const mLocalizer = momentLocalizer(moment)
+const locales = {
+  "en-US": require("date-fns/locale/en-US"),
+};
 
-const ColoredDateCellWrapper = ({ children }) =>
-  React.cloneElement(React.Children.only(children), {
-    style: {
-      backgroundColor: 'lightblue',
-    },
-  });
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales
+});
 
-export function BigCalendar({
-  localizer = mLocalizer,
-  showDemoLink = true,
-  ...props
-}) {
-  const { components, defaultDate, max, views } = useMemo(
-    () => ({
-      components: {
-        timeSlotWrapper: ColoredDateCellWrapper,
-      },
-      defaultDate: new Date(2023, 2, 1),
-      max: dates.add(dates.endOf(new Date(2015, 17, 1), 'day'), -1, 'hours'),
-      views: Object.keys(Views).map((k) => Views[k]),
-    }),
-    []
-  );
+const events = [
+  {
+    title: "Big Meeting",
+    allDay: true,
+    start: new Date(2021, 6, 0),
+    end: new Date(2021, 6, 0),
+  },
+  {
+    title: "Vacation",
+    start: new Date(2021, 6, 7),
+    end: new Date(2021, 6, 10),
+  },
+  {
+    title: "Conference",
+    start: new Date(2021, 6, 20),
+    end: new Date(2021, 6, 23),
+  },
+];
+
+export function BigCalendar() {
+  const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
+  const [allEvents, setAllEvents] = useState(events);
+
+  function handleAddEvent() {
+    setAllEvents([...allEvents, newEvent]);
+  }
 
   return (
-    <Fragment>
-      <div className="height600" {...props}>
-        <Calendar
-          components={components}
-          defaultDate={defaultDate}
-          // events={events}
-          localizer={localizer}
-          max={max}
-          showMultiDayTimes
-          step={60}
-          views={views}
-        />
+    <div className="App">
+      <h1>Calendar</h1>
+      <h2>Add New Event</h2>
+      <div>
+        <input type="text" placeholder="Add Title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
+        <DatePicker placeholderText="Start Date" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
+        <DatePicker placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
+        <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
+                Add Event
+        </button>
       </div>
-    </Fragment>
+      <Calendar localizer={localizer} events={allEvents} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
+    </div>
   );
 }
 
