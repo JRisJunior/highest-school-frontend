@@ -1,11 +1,9 @@
-import moment from 'moment';
 import React, { Fragment, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Calendar,
   Views,
   DateLocalizer,
-  momentLocalizer,
   dateFnsLocalizer,
 } from 'react-big-calendar';
 import format from "date-fns/format";
@@ -15,10 +13,10 @@ import startOfWeek from "date-fns/startOfWeek";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import enUS from "date-fns/locale/en-US";
 
 const locales = {
-  "en-US": require("date-fns/locale/en-US"),
+  "en-US": enUS,
 };
 
 const localizer = dateFnsLocalizer({
