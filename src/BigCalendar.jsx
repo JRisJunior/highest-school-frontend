@@ -1,4 +1,5 @@
 import React, { Fragment, useMemo, useState } from 'react';
+import axios from "axios";
 import PropTypes from 'prop-types';
 import {
   Calendar,
@@ -27,35 +28,54 @@ const localizer = dateFnsLocalizer({
   locales
 });
 
-const events = [
-  {
-    title: "Big Meeting",
-    allDay: true,
-    start: new Date(2021, 6, 0),
-    end: new Date(2021, 6, 0),
-  },
-  {
-    title: "Vacation",
-    start: new Date(2021, 6, 7),
-    end: new Date(2021, 6, 10),
-  },
-  {
-    title: "Conference",
-    start: new Date(2021, 6, 20),
-    end: new Date(2021, 6, 23),
-  },
-];
+
 
 export function BigCalendar() {
-  const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-  const [allEvents, setAllEvents] = useState(events);
+
+  // const events = [
+  //   {
+  //     title: "Big Meeting",
+  //     start: new Date(2023, 1, 8),
+  //     end: new Date(2023, 1, 9),
+  //   },
+  //   {
+  //     title: "Vacation",
+  //     start: new Date(2023, 1, 7),
+  //     end: new Date(2023, 1, 10),
+  //   },
+  //   {
+  //     title: "Conference",
+  //     start: new Date(2023, 1, 10),
+  //     end: new Date(2023, 1, 12),
+  //   },
+  // ];
+
+  const [newEvent, setNewEvent] = useState({title: "", start: "", end: ""}); 
+  const [allEvents, setAllEvents] = useState([]);
+
+  let self = this;
+  axios.get('http://localhost:3000/events.json').then(function (response) {
+    console.log("response data");
+    console.log(response.data);
+    let appointments = response.data;
+    for (let i = 0; i < appointments.length; i++) {
+      console.log(appointments[i]);
+      appointments[i].start = parse(appointments[i].start, new Date()).toString();
+      appointments[i].end = parse(appointments[i].end, new Date()).toString();
+    }
+    console.log("appointments");
+    console.log(appointments);
+    setAllEvents(appointments);
+  }).catch(function (error) {
+    console.log(error);
+  });
 
   function handleAddEvent() {
     setAllEvents([...allEvents, newEvent]);
   }
 
   return (
-    <div className="App">
+    <div>
       <h1>Calendar</h1>
       <h2>Add New Event</h2>
       <div>
@@ -70,4 +90,3 @@ export function BigCalendar() {
     </div>
   );
 }
-
