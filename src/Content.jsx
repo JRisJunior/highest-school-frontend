@@ -61,7 +61,6 @@ export function Content() {
       <Modal show={isEventsShowVisible} onClose={handleClose}>
         <EventsShow event={currentEvent} onDestroyEvent={handleDestroyEvent} />
       </Modal>
-      <BigCalendar />
       <EventsIndex events={events} onShowEvent={handleShowEvent} />
     </div>
   );
