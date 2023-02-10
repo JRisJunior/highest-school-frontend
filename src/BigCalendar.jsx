@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useState } from 'react';
+import React, { Fragment, useMemo, useState, useEffect } from 'react';
 import axios from "axios";
 import PropTypes from 'prop-types';
 import {
@@ -28,8 +28,6 @@ const localizer = dateFnsLocalizer({
   locales
 });
 
-
-
 export function BigCalendar() {
 
   // const events = [
@@ -53,26 +51,38 @@ export function BigCalendar() {
   const [newEvent, setNewEvent] = useState({title: "", start: "", end: ""}); 
   const [allEvents, setAllEvents] = useState([]);
 
-  let self = this;
-  axios.get('http://localhost:3000/events.json').then(function (response) {
-    console.log("response data");
-    console.log(response.data);
-    let appointments = response.data;
-    for (let i = 0; i < appointments.length; i++) {
-      console.log(appointments[i]);
-      appointments[i].start = parse(appointments[i].start, new Date()).toString();
-      appointments[i].end = parse(appointments[i].end, new Date()).toString();
-    }
-    console.log("appointments");
-    console.log(appointments);
-    setAllEvents(appointments);
-  }).catch(function (error) {
-    console.log(error);
-  });
+  const handleIndexEvents = () => {
+    axios.get("http://localhost:3000/events.json").then((response) => {
+      console.log(response.data);
+      setAllEvents(response.data);
+      console.log(allEvents);
+    });
+  };
+
+  // let self = this;
+  // axios.get('http://localhost:3000/events.json').then(function (response) {
+  //   setAllEvents(response.data);
+  //   console.log("response data");
+  //   console.log(response.data);
+  //   let appointments = response.data;
+  //   for (let i = 0; i < appointments.length; i++) {
+  //     console.log(appointments[i]);
+  //     appointments[i].start = parse(appointments[i].start, new Date()).toString();
+  //     appointments[i].end = parse(appointments[i].end, new Date()).toString();
+  //   }
+  //   console.log("appointments");
+  //   console.log(appointments);
+  //   setAllEvents(appointments);
+  // }).catch(function (error) {
+  //   console.log(error);
+  // });
 
   function handleAddEvent() {
+    console.log(newEvent);
     setAllEvents([...allEvents, newEvent]);
   }
+
+  useEffect(handleIndexEvents, []);
 
   return (
     <div>

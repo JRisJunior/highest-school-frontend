@@ -53,7 +53,7 @@ export function Content() {
     });
   };
 
-  useEffect(handleIndexEvents, []);
+  // useEffect(handleIndexEvents, []);
 
   return (
     <div>
