@@ -32,7 +32,25 @@ export function Calendar() {
     });
   };
 
-
+  const commitChanges = ({ added, changed, deleted }) => {
+    this.setState((state) => {
+      console.log(data);
+      let { data } = state;
+      if (added) {
+        const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
+        data = [...data, { id: startingAddedId, ...added }];
+      }
+      if (changed) {
+        data = data.map(appointment => (
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+      }
+      if (deleted !== undefined) {
+        data = data.filter(appointment => appointment.id !== deleted);
+      }
+      console.log(data);
+      return { data };
+    });
+  };
 
 
 
@@ -48,13 +66,12 @@ export function Calendar() {
 
   React.useEffect(handleIndexEvents, []);
 
-
   return (
     <Paper>
       <Scheduler
-        data={events} height={window.innerHeight}>
+        data={events} height={660}>
         <ViewState />
-        <EditingState />
+        <EditingState onCommitChanges={commitChanges}/>
         <IntegratedEditing />
         <WeekView startDayHour={7} endDayHour={20} />
         <ConfirmationDialog />

@@ -7,10 +7,10 @@ export function EventsShow(props) {
   return (
     <div>
       <h1>Event information</h1>
-      <p>Subject: {props.event.text}</p>
+      <p>Subject: {props.event.title}</p>
       <p>Description: {props.event.description}</p>
-      <p>Start time: {props.event.start}</p>
-      <p>End time: {props.event.end}</p>
+      <p>Start time: {props.event.startDate}</p>
+      <p>End time: {props.event.endDate}</p>
       <hr />
       <button onClick={handleClick}>Destroy Event</button>
     </div>
