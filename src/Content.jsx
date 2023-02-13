@@ -30,6 +30,7 @@ export function Content() {
     axios.post("http://localhost:3000/events.json", params).then((response) => {
       setEvents([...events, response.data]);
       successCallback();
+      window.location.href="/";
     });
   };
 
