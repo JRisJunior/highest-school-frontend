@@ -4,7 +4,6 @@ import { EventsIndex } from "./EventsIndex";
 import { EventsNew } from "./EventsNew";
 import { EventsShow } from "./EventsShow";
 import { Modal } from "./Modal";
-import { BigCalendar } from "./BigCalendar";
 
 
 export function Content() {
@@ -53,7 +52,7 @@ export function Content() {
     });
   };
 
-  // useEffect(handleIndexEvents, []);
+  useEffect(handleIndexEvents, []);
 
   return (
     <div>
