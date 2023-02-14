@@ -55,17 +55,17 @@ export function Calendar() {
     });
   };
 
-  const commitChanges = ({ added, changed, deleted }) => {
-    setAppointments(() => {
-      console.log("commitChanges appointments");
-      console.log(...data);
-      let { appointments } = appointments;
-      if (added) {
-        const startingAddedId = appointments > 0 ? appointments [appointments.length - 1].id + 1 : 0;  
-        appointments = [...appointments , { id: startingAddedId, ...added }];
-      }
-    });
-  };
+  // const commitChanges = ({ added, changed, deleted }) => {
+  //   setAppointments(() => {
+  //     console.log("commitChanges appointments");
+  //     console.log(...data);
+  //     let { appointments } = appointments;
+  //     if (added) {
+  //       const startingAddedId = appointments > 0 ? appointments [appointments.length - 1].id + 1 : 0;  
+  //       appointments = [...appointments , { id: startingAddedId, ...added }];
+  //     }
+  //   });
+  // };
   
   // supposed to do the POST request to add appointment on backend
   const addAppointment = async (appointment, successCallback) => {
