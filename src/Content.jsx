@@ -18,35 +18,35 @@ export function Content() {
   const [currentEvent, setCurrentEvent] = useState({});
 
   const handleIndexEvents = () => {
-    console.log("handleIndexEvents");
+    // console.log("handleIndexEvents");
     axios.get("http://localhost:3000/events.json").then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setEvents(response.data);
     });
   };
 
   const handleCreateEvent = (params, successCallback) => {
-    console.log("handleCreateEvent", params);
+    // console.log("handleCreateEvent", params);
     axios.post("http://localhost:3000/events.json", params).then((response) => {
       setEvents([...events, response.data]);
       successCallback();
-      window.location.href="/";
+      window.location.href = "/";
     });
   };
 
   const handleShowEvent = (event) => {
-    console.log("handleShowEvent", event);
+    // console.log("handleShowEvent", event);
     setIsEventsShowVisible(true);
     setCurrentEvent(event);
   };
 
   const handleClose = () => {
-    console.log("handleClose");
+    // console.log("handleClose");
     setIsEventsShowVisible(false);
   };
 
   const handleDestroyEvent = (event) => {
-    console.log("handleDestroyEvent", event);
+    // console.log("handleDestroyEvent", event);
     axios.delete(`http://localhost:3000/events/${event.id}.json`).then((response) => {
       setEvents(events.filter((e) => e.id !== event.id));
       handleClose();

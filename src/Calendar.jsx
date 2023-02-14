@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { useState, useEffect } from "react";
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
-import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
   DayView,
@@ -23,57 +23,86 @@ export function Calendar() {
 
   const [appointments, setAppointments] = React.useState([]);
   const [addedAppointment, setAddedAppointment] = React.useState({});
+  const [appointmentChanges, setAppointmentChanges] = React.useState({});
+  const [editingAppointment, setEditingAppointment] = React.useState(undefined);
 
   const changeAddedAppointment = (addedAppointment) => {
     setAddedAppointment(addedAppointment);
   };
 
-  const commitChanges = ({ added, changed, deleted }) => {
-    let newData = [...data.data];
-    if (added) {
-      const startingAddedId = newData > 0 ? newData [data.length - 1].id + 1 : 0;  
-      newData = [...newData , { id: startingAddedId, ...added }];
-    }
-    setData(newData);
+  const changeAppointmentChanges = (appointmentChanges) => {
+    setAppointmentChanges(appointmentChanges);
   };
 
-  const handleIndexAppointments = () => {
-    console.log("handleIndexAppointments");
+  const changeEditingAppointment = (editingAppointment) => {
+    setEditingAppointment(editingAppointment);
+  };
+
+  const handleSetAppointments = () => {
+    // console.log("handleIndexAppointments");
     const getAppointments = async () => {
       const appointmentsFromServer = await fetchAppointments();
-      console.log("appointmentsFromServer");
-      console.log(appointmentsFromServer);
       setAppointments(appointmentsFromServer);
     };
     getAppointments();
+    // console.log("appointmentsFromServer");
   };
 
-  const fetchAppointments = async() => {
+  const fetchAppointments = async () => {
     axios.get("http://localhost:3000/events.json").then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setAppointments(response.data);
     });
   };
 
+  const commitChanges = ({ added, changed, deleted }) => {
+    setAppointments(() => {
+      console.log("commitChanges appointments");
+      console.log(...data);
+      let { appointments } = appointments;
+      if (added) {
+        const startingAddedId = appointments > 0 ? appointments [appointments.length - 1].id + 1 : 0;  
+        appointments = [...appointments , { id: startingAddedId, ...added }];
+      }
+    });
+  };
+  
+  // supposed to do the POST request to add appointment on backend
+  const addAppointment = async (appointment, successCallback) => {
+    console.log("addAppointment", appointment);
+    const startingAddedId = appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
+    appointment.id = startingAddedId;
+    axios.post("http://localhost:3000/events.json", appointment).then((response) => {
+      setAppointments([...appointments, response.data]);
+      successCallback();
+    });
+  };
 
 
-
-
-
-  React.useEffect(handleIndexAppointments, []);
+  React.useEffect(handleSetAppointments, []);
 
   return (
-    <Paper>
-      <Scheduler
-        data={appointments} height={660}>
-        <ViewState />
-        <EditingState />
-        <IntegratedEditing />
-        <WeekView startDayHour={7} endDayHour={20} />
-        <ConfirmationDialog />
-        <Appointments />
-        <AppointmentTooltip showOpenButton showDeleteButton/>
-      </Scheduler>
-    </Paper>
+    <div  id="highest-school-schedule">
+      <h1>Highest School Schedule</h1>
+      <Paper>
+        <Scheduler
+          data={appointments} height={660}>
+          <ViewState />
+          <EditingState
+            // onCommitChanges={commitChanges}
+            addedAppointment={addedAppointment}
+            onAddedAppointmentChange={changeAddedAppointment}
+            appointmentChanges={appointmentChanges}
+            onAppointmentChangesChange={changeAppointmentChanges}
+            editingAppointment={editingAppointment}
+            onEditingAppointmentChange={changeEditingAppointment}/>
+          <WeekView startDayHour={8} endDayHour={18} />
+          <ConfirmationDialog />
+          <Appointments />
+          <AppointmentTooltip showOpenButton showDeleteButton/>
+          <AppointmentForm />
+        </Scheduler>
+      </Paper>
+    </div>
   );
 }
