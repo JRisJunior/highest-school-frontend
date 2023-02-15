@@ -34,6 +34,12 @@ npm i --save @devexpress/dx-react-core @devexpress/dx-react-scheduler
 npm i --save @devexpress/dx-react-scheduler-material-ui
 ```
 
+Additionally, you will need a backend and/or database to integrate with this React.js frontend. I have made one in Rails that is fairly boilerplate for what is needed, and that can be cloned from here (make sure you're not in the same directory as your frontend!):
+
+```zsh
+git clone https://github.com/JRisJunior/highest-school-api.git
+```
+
 ## Features to be added
 
 - You can add your cell phone number to your profile, which will then text you when a class period ends, and when a passing period (break time) ends, in replacement of a "school bell"
