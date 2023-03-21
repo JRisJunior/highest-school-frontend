@@ -12,8 +12,8 @@ function App() {
       <Header />
       <Signup />
       <Login />
-      <Calendar />
       <LogoutLink />
+      <Calendar />
       <Content />
       <Footer />
     </div>

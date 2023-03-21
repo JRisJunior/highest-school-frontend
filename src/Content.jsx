@@ -26,11 +26,11 @@ export function Content() {
   };
 
   const handleCreateEvent = (params, successCallback) => {
-    // console.log("handleCreateEvent", params);
+    console.log("handleCreateEvent", params);
     axios.post("http://localhost:3000/events.json", params).then((response) => {
       setEvents([...events, response.data]);
       successCallback();
-      window.location.href = "/";
+      // window.location.href = "/";
     });
   };
 

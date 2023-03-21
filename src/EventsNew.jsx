@@ -4,6 +4,7 @@ export function EventsNew(props) {
     event.preventDefault();
     const params = new FormData(event.target);
     props.onCreateEvent(params, () => event.target.reset());
+    console.log(params);
   };
 
   return (
