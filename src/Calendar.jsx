@@ -7,6 +7,7 @@ import {
   Scheduler,
   DayView,
   WeekView,
+  MonthView,
   Appointments,
   AppointmentForm,
   AppointmentTooltip,
@@ -132,6 +133,7 @@ export function Calendar() {
             onEditingAppointmentChange={changeEditingAppointment}/>
           <WeekView startDayHour={8} endDayHour={18} />
           <DayView startDayHour={8} endDayHour={18} />
+          <MonthView />
           <Toolbar />
           <ViewSwitcher />
           <ConfirmationDialog />
