@@ -27,6 +27,7 @@ import {
 export function Calendar() {
 
   const [appointments, setAppointments] = React.useState([]);
+  const [appointmentsUpdated, setAppointmentsUpdated] = React.useState(0);
   const [addedAppointment, setAddedAppointment] = React.useState({});
   const [appointmentChanges, setAppointmentChanges] = React.useState({});
   const [editingAppointment, setEditingAppointment] = React.useState(undefined);
@@ -44,22 +45,28 @@ export function Calendar() {
     setEditingAppointment(editingAppointment);
   };
 
-  const handleSetAppointments = () => {
-    console.log("handleIndexAppointments");
-    const getAppointments = async () => {
-      const appointmentsFromServer = await fetchAppointments();
-      setAppointments(appointmentsFromServer);
-    };
-    getAppointments();
-    console.log("appointmentsFromServer");
-  };
+  // const handleSetAppointments = () => {
+  //   console.log("handleIndexAppointments");
+  //   const getAppointments = async () => {
+  //     const appointmentsFromServer = await fetchAppointments();
+  //     setAppointments(appointmentsFromServer);
+  //   };
+  //   getAppointments();
+  //   console.log("appointmentsFromServer");
+  // };
 
-  const fetchAppointments = async () => {
-    axios.get("http://localhost:3000/events.json").then((response) => {
+  React.useEffect(() => {
+    const fetchAppointments = async () => {
+      const response = await axios.get("http://localhost:3000/events.json");
       console.log(response.data);
       setAppointments(response.data);
-    });
-  };
+    };
+    fetchAppointments();
+  }, [appointmentsUpdated]);
+  
+     
+  
+ 
 
   // const commitChanges = ({ added, changed, deleted }) => {
   //   setAppointments(() => {
@@ -79,6 +86,8 @@ export function Calendar() {
     if (added) {
       const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
       updatedData = [...updatedData, { id: startingAddedId, ...added }];
+      const appointmentData = { "subject": added.title, "description": added.notes, "start_time": new Date(added.startDate), "end_time": new Date(added.endDate), "allDay": added.allDay };
+      addAppointment(appointmentData);
     }
 
     if (changed) {
@@ -95,26 +104,26 @@ export function Calendar() {
     console.log(updatedData);
     console.log(added);
     console.log('commiting changes!!!');
-    const appointmentData = { "subject": added.title, "description": added.notes, "start_time": new Date(added.startDate), "end_time": new Date(added.endDate), "allDay": added.allDay };
+
     // call addAppointment with data we just created(appointment)
-    addAppointment(appointmentData);
+
 
     setData(updatedData);
   };
   
   // supposed to do the POST request to add appointment on backend
-  const addAppointment = async (appointment, successCallback) => {
+  const addAppointment = async (appointment) => {
     console.log("addAppointment", appointment);
     const startingAddedId = appointments.length > 0 ? appointments[appointments.length - 1].id + 1 : 0;
     appointment.id = startingAddedId;
     axios.post("http://localhost:3000/events.json", appointment).then((response) => {
       setAppointments([...appointments, response.data]);
-      successCallback();
     });
+    setAppointmentsUpdated(appointmentsUpdated + 1);
   };
 
 
-  React.useEffect(handleSetAppointments, []);
+  // React.useEffect(handleSetAppointments, []);
 
   return (
     <div  id="highest-school-schedule">
