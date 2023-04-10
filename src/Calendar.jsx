@@ -90,9 +90,7 @@ export function Calendar() {
     console.log(updatedData);
     console.log(added);
     console.log('commiting changes!!!');
-    const appointmentData = { "subject": added.title,
-    "description": added.notes, "start_time": new Date(added.startDate), "end_time": new Date(added.endDate), "allDay": added.allDay
-   }
+    const appointmentData = { "subject": added.title, "description": added.notes, "start_time": new Date(added.startDate), "end_time": new Date(added.endDate), "allDay": added.allDay };
     // call addAppointment with data we just created(appointment)
     addAppointment(appointmentData);
 
