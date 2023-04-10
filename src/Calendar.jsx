@@ -8,6 +8,8 @@ import {
   DayView,
   WeekView,
   MonthView,
+  DateNavigator,
+  TodayButton,
   Appointments,
   AppointmentForm,
   AppointmentTooltip,
@@ -135,6 +137,8 @@ export function Calendar() {
           <DayView startDayHour={8} endDayHour={18} />
           <MonthView />
           <Toolbar />
+          <DateNavigator />
+          <TodayButton />
           <ViewSwitcher />
           <ConfirmationDialog />
           <Appointments />
