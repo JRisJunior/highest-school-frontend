@@ -10,7 +10,9 @@ import {
   Appointments,
   AppointmentForm,
   AppointmentTooltip,
-  ConfirmationDialog
+  ConfirmationDialog,
+  ViewSwitcher,
+  Toolbar,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 
@@ -117,7 +119,9 @@ export function Calendar() {
       <Paper>
         <Scheduler
           data={appointments} height={660}>
-          <ViewState />
+          <ViewState
+            defaultCurrentDate="2023-04-10"
+            defaultCurrentViewName="Week" />
           <EditingState
             onCommitChanges={commitChanges}
             addedAppointment={addedAppointment}
@@ -127,6 +131,9 @@ export function Calendar() {
             editingAppointment={editingAppointment}
             onEditingAppointmentChange={changeEditingAppointment}/>
           <WeekView startDayHour={8} endDayHour={18} />
+          <DayView startDayHour={8} endDayHour={18} />
+          <Toolbar />
+          <ViewSwitcher />
           <ConfirmationDialog />
           <Appointments />
           <AppointmentTooltip showOpenButton showDeleteButton/>
